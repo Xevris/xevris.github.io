@@ -1,11 +1,11 @@
 this.addEventListener('install', e => {
   caches.open('v1').then( cache => {
     return cache.addAll([
-      '/ttf-offline/',
-      '/ttf-offline/sw.js',
-      '/ttf-offline/manifest.json',
-      '/ttf-offline/favicon.ico',
-      '/ttf-offline/icon192.png'
+      '/',
+      '/sw.js',
+      '/manifest.json',
+      '/favicon.ico',
+      '/icon192.png'
     ]);
   });
   console.log('sw installed');

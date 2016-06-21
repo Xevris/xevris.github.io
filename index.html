@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>The Frost Fables</title>
-    <!-- <link rel="manifest" href="/ttf-offline/manifest.json"> -->
+    <link rel="manifest" href="manifest.json">
     <script>
-      // if (navigator.serviceWorker)
-        // navigator.serviceWorker.register('/ttf-offline/sw.js');
+      if (navigator.serviceWorker)
+        navigator.serviceWorker.register('sw.js');
     </script>
   </head>
   <body>
@@ -17,7 +17,7 @@
         background: #1B1E21;
       }
     </style>
-    <!-- <img src="/ttf-offline/icon192.png" alt=""> -->
+    <img src="/icon192.png" alt="">
     <script>
 
       const app = new class {
