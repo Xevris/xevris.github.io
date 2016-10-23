@@ -1,0 +1,238 @@
+<style>
+
+  html {
+    height: 100%;
+    --dark-1: #1B1E21;
+    --dark-2: #202327;
+    --dark-3: #292D32;
+    --light-1: #737f8c;
+    --light-2: #8f98a3;
+    --highlight-blue: #3D668F;
+    --highlight-text: #E6E6E6;
+  }
+
+  body > * {
+    background: var(--dark-2);
+    margin-bottom: 10px;
+    padding: 10px 20px;
+  }
+
+  h1 {
+    /*background: var(--dark-3);*/
+    margin: -10px -10px 10px -10px;
+    padding: 10px;
+    color: var(--highlight-blue);
+    text-transform: capitalize;
+    font-weight: normal;
+  }
+
+  a {
+    color: var(--light-2);
+  }
+
+</style>
+<template>
+  <style>
+
+    :host {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      font-family: sans-serif;
+      margin: 0 auto;
+      padding: 0 20px;
+      max-width: 1400px;
+
+      background: var(--dark-1);
+      color: var(--light-1);
+    }
+
+    header, footer {
+      background: var(--dark-2);
+      position: relative;
+      z-index: 1;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 0 0 0;
+    }
+
+    #brand {
+      display: block;
+      max-width: 200px;
+      width: 50vw;
+      margin: 20px auto;
+      padding: 5px;
+    }
+
+    #brand img {
+      pointer-events: none;
+    }
+
+    nav {
+      display: flex;
+    }
+
+    nav a {
+      position: relative;
+      flex: 1 1 auto;
+      display: block;
+      color: var(--light-1);
+      text-decoration: none;
+      line-height: 40px;
+      text-align: center;
+      font-size: 18px;
+      border: 1px solid var(--dark-1);
+      border-bottom: none;
+      border-right: none;
+    }
+
+    nav a:first-child {
+      border-left: none;
+    }
+
+    nav a:hover {
+      background: var(--highlight-blue);
+      color: var(--highlight-text);
+    }
+
+    .current::after {
+      content: '';
+      display: block;
+      height: 4px;
+      right: 0;
+      bottom: -5px;
+      left: 0;
+      background: var(--highlight-blue);
+      position: absolute;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    footer p {
+      margin-left: 20px;
+      font-size: 12px;
+    }
+
+    footer a {
+      display: block;
+      font-size: 12px;
+      margin: 8px 16px;
+      color: var(--light-1);
+      text-decoration: none;
+      padding: 4px;
+    }
+
+    footer a:hover {
+      color: var(--light-2);
+      text-decoration: underline;
+    }
+
+    main {
+      transition: opacity 100ms, transform 100ms;
+    }
+
+    main.hidden {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    @media (min-width: 720px) {
+
+      #brand {
+        display: inline-block;
+        margin: 10px 15px;
+      }
+
+      nav {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        padding: 0;
+      }
+
+      nav a {
+        padding: 0 20px;
+      }
+
+      nav a:first-child {
+        border-left: 1px solid var(--dark-1);
+      }
+
+    }
+
+  </style>
+  <header>
+    <a id="brand" href="/">
+      <img src="smethodLogo.svg" alt="Smethod Interactive" />
+    </a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/services">Services</a>
+      <a href="/profile">Profile</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <p>Copyright ©2016, Smethod - Interactive</p>
+    <a href="/privacy">Privacy</a>
+  </footer>
+</template>
+<script>
+
+  const app = new class {
+
+    constructor () {
+      EventTarget.prototype.on = EventTarget.prototype.addEventListener;
+      let imp = document.currentScript.ownerDocument;
+      imp = imp.querySelector('template').content.cloneNode(true);
+      document.body.attachShadow({mode: 'open'}).appendChild(imp);
+      document.on('click', this._doClick.bind(this));
+      this.con = document.body.shadowRoot.querySelector('main');
+      this.stateCache = new Map();
+      // navigator.serviceWorker.register('/sw.js');
+    }
+
+    get show () {
+      return !this.con.classList.contains('hidden');
+    }
+
+    set show (v) {
+      if (v)
+        this.con.classList.remove('hidden');
+      else
+        this.con.classList.add('hidden');
+    }
+
+    cacheState () {
+      // this.stateCache.set()
+    }
+
+    _doClick (e) {
+      if (e.path[0].tagName != 'A')
+        return;
+      if (!e.path[0].href.includes(location.host))
+        return;
+      e.preventDefault();
+      this.show = false;
+      setTimeout(_=> {
+        this.show = true;
+      }, 200);
+      console.log(e.path[0]);
+    }
+
+  }();
+
+</script>
